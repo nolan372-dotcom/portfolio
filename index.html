@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Nolan Lee — developer based in Texas building practical web tools for nonprofits, with Claude Code in the loop.">
+  <title>Nolan Lee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Tokens ─────────────────────────────────────────── */
+    :root {
+      --c-ink:     #1C1C1A;
+      --c-body:    #3E3E3A;
+      --c-muted:   #72706A;
+      --c-ghost:   #B0AEA8;
+      --c-rule:    #E4E4DE;
+      --c-accent:  #C2410C;
+      --c-bg:      #FAFAF8;
+    }
+
+    /* ── Reset ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+    body {
+      background: var(--c-bg);
+      color: var(--c-ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 15.5px;
+      line-height: 1.72;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--c-accent); color: var(--c-bg); }
+
+    /* ── Focus ──────────────────────────────────────────── */
+    :focus-visible {
+      outline: 2px solid var(--c-accent);
+      outline-offset: 3px;
+    }
+
+    /* ── Scroll reveal ──────────────────────────────────── */
+    .js-ready [data-fade]:not([data-shown]) {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    .js-ready [data-fade][data-shown] {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+    @media (max-width: 580px) { .wrap { padding: 0 24px; } }
+
+    /* ── Nav ────────────────────────────────────────────── */
+    #main-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 52px;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid rgba(28,28,26,0.08);
+      transform: translateY(-110%);
+      transition: transform 0.42s cubic-bezier(0.2,0.8,0.2,1);
+    }
+    @media (max-width: 580px) { #main-nav { padding: 16px 24px; } }
+    #main-nav.visible { transform: translateY(0); }
+    .nav-logo {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: var(--c-ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-link {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--c-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--c-ink); }
+
+    /* ── Hero ───────────────────────────────────────────── */
+    #top {
+      position: relative;
+      min-height: 96vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 88px;
+      box-sizing: border-box;
+    }
+    .hero-meta {
+      position: absolute;
+      top: 52px;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      pointer-events: none;
+    }
+    .hero-meta span {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c-ghost);
+      font-weight: 400;
+    }
+    #hero-h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(52px, 8.5vw, 82px);
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      color: var(--c-ink);
+      font-variation-settings: 'opsz' 72;
+      max-width: 16ch;
+      margin-bottom: 44px;
+    }
+    #hero-rule {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, var(--c-accent) 64px, var(--c-rule) 64px);
+      margin-bottom: 44px;
+    }
+    .hero-sub {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 48px;
+    }
+    @media (max-width: 520px) { .hero-sub { grid-template-columns: 1fr; gap: 24px; } }
+    .hero-body {
+      font-size: 16px;
+      line-height: 1.68;
+      color: var(--c-muted);
+      font-weight: 300;
+      max-width: 44ch;
+    }
+    .hero-scroll {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--c-ghost);
+      text-decoration: none;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .hero-scroll:hover { color: var(--c-accent); }
+
+    /* ── Section heads ──────────────────────────────────── */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 88px 0 56px;
+      scroll-margin-top: 72px;
+    }
+    .section-head h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(32px, 4.5vw, 44px);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      white-space: nowrap;
+      font-variation-settings: 'opsz' 36;
+      color: var(--c-ink);
+    }
+    .s-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--c-rule);
+      position: relative;
+      top: -3px;
+    }
+
+    /* ── Project 1 — standard layout ───────────────────── */
+    .project { padding-bottom: 80px; }
+
+    .project-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-ghost);
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .project-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .proj-h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(36px, 5.5vw, 50px);
+      letter-spacing: -0.028em;
+      line-height: 1.04;
+      font-variation-settings: 'opsz' 48;
+      color: var(--c-ink);
+    }
+    .project-idx {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+      color: var(--c-accent);
+      background: rgba(194,65,12,0.08);
+      padding: 4px 8px;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .lead-p {
+      font-size: 18px;
+      line-height: 1.63;
+      color: var(--c-ink);
+      font-weight: 400;
+      max-width: 52ch;
+      margin-bottom: 14px;
+    }
+    .project-body {
+      font-size: 15px;
+      line-height: 1.78;
+      color: var(--c-body);
+      font-weight: 300;
+      max-width: 56ch;
+    }
+    .project-frame {
+      width: 100%;
+      aspect-ratio: 16/10;
+      margin: 36px 0 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .project-stack {
+      font-size: 12.5px;
+      color: var(--c-ghost);
+      letter-spacing: 0.02em;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+    .project-links { display: flex; gap: 24px; }
+    .proj-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--c-rule);
+      padding-bottom: 1px;
+      transition: color 0.14s, border-color 0.14s;
+    }
+    .proj-link:hover { color: var(--c-accent); border-color: var(--c-accent); }
+
+    .rule { height: 1px; background: var(--c-rule); }
+
+    /* ── Project 2 — Fridge Connect ─────────────────────── */
+    .project-alt { padding-top: 80px; padding-bottom: 0; }
+
+    .project-alt-num {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+      color: var(--c-accent);
+      background: rgba(194,65,12,0.08);
+      padding: 4px 8px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .project-frame-bleed {
+      width: calc(100% + 52px);
+      margin-right: -52px;
+      aspect-ratio: 16/10;
+      margin-top: 36px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-frame-bleed img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 580px) {
+      .project-frame-bleed { width: calc(100% + 24px); margin-right: -24px; }
+    }
+
+    /* ── About ──────────────────────────────────────────── */
+    .about-items { margin-bottom: 0; }
+    .about-item {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 48px;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--c-rule);
+    }
+    .about-item:first-child { border-top: 1px solid var(--c-rule); }
+    @media (max-width: 560px) { .about-item { grid-template-columns: 1fr; gap: 10px; } }
+    .about-h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(20px, 2.4vw, 24px);
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      font-variation-settings: 'opsz' 18;
+      color: var(--c-ink);
+      padding-top: 3px;
+    }
+    .about-item p {
+      font-size: 15px;
+      line-height: 1.78;
+      color: var(--c-body);
+      font-weight: 300;
+    }
+
+    /* ── Contact (dark section) ─────────────────────────── */
+    #contact-section {
+      background: var(--c-ink);
+      margin-top: 88px;
+    }
+    #contact-section .section-head h2 { color: rgba(250,250,248,0.9); }
+    #contact-section .s-rule { background: rgba(250,250,248,0.12); }
+
+    .contact-hero { padding: 0 0 40px; }
+    .contact-email {
+      display: inline-block;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(26px, 4.2vw, 44px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      font-variation-settings: 'opsz' 36;
+      color: rgba(250,250,248,0.92);
+      text-decoration: none;
+      border-bottom: 1.5px solid rgba(250,250,248,0.3);
+      padding-bottom: 3px;
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .contact-email:hover { color: var(--c-accent); border-color: var(--c-accent); }
+
+    .contact-socials { display: flex; gap: 20px; margin-top: 16px; }
+    .contact-social {
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      color: rgba(250,250,248,0.35);
+      text-decoration: none;
+      transition: color 0.14s;
+    }
+    .contact-social:hover { color: rgba(250,250,248,0.8); }
+
+    /* form on dark bg */
+    .contact-form { display: grid; gap: 28px; padding-top: 48px; }
+    .form-field { display: grid; gap: 8px; }
+    .form-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: rgba(250,250,248,0.38);
+    }
+    .port-input {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(250,250,248,0.88);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(250,250,248,0.15);
+      border-radius: 0;
+      padding: 10px 0;
+      transition: border-color 0.18s;
+      outline: none;
+    }
+    .port-input::placeholder { color: rgba(250,250,248,0.2); }
+    .port-input:focus { border-color: rgba(250,250,248,0.5); }
+    .port-input:focus-visible { outline: none; border-color: var(--c-accent); }
+    textarea.port-input { resize: none; min-height: 96px; }
+    .form-err { font-size: 12px; color: #F87171; display: none; font-weight: 400; }
+
+    #submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: none;
+      border: 1px solid rgba(250,250,248,0.3);
+      color: rgba(250,250,248,0.8);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 13px 28px;
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
+    }
+    #submit-btn:hover {
+      background: var(--c-accent);
+      border-color: var(--c-accent);
+      color: #fff;
+    }
+
+    #form-success {
+      display: none;
+      padding: 40px 0;
+      border-top: 1px solid rgba(250,250,248,0.1);
+    }
+    #success-heading {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 26px;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+      color: rgba(250,250,248,0.9);
+    }
+    #success-body { font-size: 15px; color: rgba(250,250,248,0.5); line-height: 1.7; font-weight: 300; }
+    #success-body strong { color: rgba(250,250,248,0.8); font-weight: 500; }
+    .reset-btn {
+      margin-top: 18px;
+      display: inline-block;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      color: var(--c-accent);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+    }
+
+    .site-footer {
+      padding: 28px 0 64px;
+      border-top: 1px solid rgba(250,250,248,0.08);
+      margin-top: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .site-footer span {
+      font-size: 11.5px;
+      letter-spacing: 0.04em;
+      color: rgba(250,250,248,0.22);
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a href="#top" class="nav-logo">Nolan Lee</a>
+  <div class="nav-links">
+    <a href="#work" class="nav-link">Work</a>
+    <a href="#about" class="nav-link">About</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <div class="wrap">
+    <section id="top">
+      <div class="hero-meta">
+        <span>Texas</span>
+        <span>2025</span>
+      </div>
+      <div data-fade data-shown>
+        <h1 id="hero-h1">I build practical web tools for non&#8209;profits, the kind that replace a spreadsheet and a group chat.</h1>
+        <div id="hero-rule"></div>
+        <div class="hero-sub">
+          <p class="hero-body">I ship real applications for organizations that run on small budgets and tight constraints, and I build them with Claude Code in the loop.</p>
+          <a href="#work" class="hero-scroll">Selected work ↓</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Work ─────────────────────────────────────────── -->
+  <div id="work" class="wrap" style="scroll-margin-top:72px;">
+    <div class="section-head" data-fade>
+      <h2>Work</h2>
+      <div class="s-rule"></div>
+    </div>
+
+    <!-- Journey Home — standard layout -->
+    <article class="project" data-fade>
+      <div class="project-eyebrow">Foster-based animal rescues</div>
+      <div class="project-title-row">
+        <h3 class="proj-h3">Journey Home</h3>
+        <span class="project-idx">01</span>
+      </div>
+      <p class="lead-p">Small rescues have no single source of truth for who&#8217;s available to foster right now, or where each animal is. Coordinators run it across group texts and spreadsheets, and things fall through.</p>
+      <p class="project-body">I built a placement dashboard: a foster roster, an animal roster, and capacity enforcement, with one live view of who has which animal and who&#8217;s free. When a foster hits capacity, new placements are blocked automatically, so the system can&#8217;t be over-committed by accident.</p>
+      <div class="project-frame">
+        <img src="Journey-Home.png" alt="Journey Home placement dashboard — foster roster and animal placement tracker">
+      </div>
+      <p class="project-stack">PHP &middot; CodeIgniter 4 &middot; MySQL &middot; Tailwind CSS</p>
+      <div class="project-links">
+        <a href="https://github.com/nolan372-dotcom/journey-home" target="_blank" rel="noopener" class="proj-link">GitHub ↗</a>
+        <a href="https://journey-home.nolanai.dev/index.php/login" target="_blank" rel="noopener" class="proj-link">Live app ↗</a>
+      </div>
+    </article>
+
+    <div class="rule"></div>
+
+    <!-- Fridge Connect — bleed frame layout -->
+    <article class="project-alt" data-fade>
+      <div class="project-eyebrow">Mutual-aid community fridges</div>
+      <div class="project-title-row">
+        <h3 class="proj-h3">Fridge Connect</h3>
+        <span class="project-alt-num">02</span>
+      </div>
+      <p class="lead-p">Fridge coordinators juggle status updates, volunteer tasks, and donation pickups across Instagram DMs and spreadsheets — no shared view, no single source of truth, a lot of duplicated effort.</p>
+      <p class="project-body">I built a live tracking system: one place for fridge status, volunteer task assignments, and donation-pickup logging. It&#8217;s designed for volunteers with no technical background. The screen tells you what needs doing and who&#8217;s doing it, and nothing else.</p>
+      <div class="project-frame-bleed">
+        <img src="fridge-connect.png" alt="Fridge Connect live status board — community fridge tracker">
+      </div>
+      <p class="project-stack">PHP &middot; CodeIgniter 4 &middot; MySQL &middot; Tailwind CSS</p>
+      <div class="project-links">
+        <a href="https://github.com/nolan372-dotcom/fridge-connect" target="_blank" rel="noopener" class="proj-link">GitHub ↗</a>
+        <a href="https://fridge-connect.nolanai.dev/" target="_blank" rel="noopener" class="proj-link">Live app ↗</a>
+      </div>
+    </article>
+  </div>
+
+  <!-- ── About ─────────────────────────────────────────── -->
+  <div id="about" class="wrap" style="scroll-margin-top:72px;">
+    <div class="section-head" data-fade>
+      <h2>About</h2>
+      <div class="s-rule"></div>
+    </div>
+    <div class="about-items">
+      <div class="about-item" data-fade>
+        <h3 class="about-h3">Non-profits and real organizations</h3>
+        <p>The interesting constraints here aren&#8217;t technical. A foster coordinator isn&#8217;t going to read documentation, and there&#8217;s no budget for a second tool if the first one is confusing. Building for these orgs means the software has to disappear. It only earns its place if it&#8217;s genuinely faster than the group chat it replaces. That&#8217;s a harder and more honest bar than chasing a market.</p>
+      </div>
+      <div class="about-item" data-fade>
+        <h3 class="about-h3">Building with Claude Code</h3>
+        <p>I build with Claude Code as a core part of the process, not as a novelty. It changes which decisions I make first. Data models and edge cases surface early, instead of after the demo, and it&#8217;s relentless about the cases I&#8217;d rather wave past: the foster who&#8217;s at capacity, the donation that never gets picked up. Working this way taught me to define the problem precisely before writing anything, because that&#8217;s where the real leverage is.</p>
+      </div>
+      <div class="about-item" data-fade>
+        <h3 class="about-h3">Making games</h3>
+        <p>When there&#8217;s no brief, no org, and no problem to solve, I&#8217;m working on my top-down pixel roguelike RPG &#8212; somewhere between the card-building decisions of Slay the Spire and the absurdity of Everything is Crab. It&#8217;s the thing I make when the only thing to do is the game itself, and it keeps the part of me that codes for fun honest about the part that codes to ship.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Contact (dark section) ───────────────────────── -->
+  <section id="contact-section">
+    <div id="contact" class="wrap" style="scroll-margin-top:0;">
+      <div class="section-head" data-fade>
+        <h2>Contact</h2>
+        <div class="s-rule"></div>
+      </div>
+
+      <div class="contact-hero" data-fade>
+        <a href="mailto:nolanlee372@gmail.com" class="contact-email">nolanlee372@gmail.com</a>
+        <div class="contact-socials">
+          <a href="https://github.com/nolan372-dotcom" target="_blank" rel="noopener" class="contact-social">GitHub ↗</a>
+          <a href="https://www.linkedin.com/in/nolan-lee-326077338" target="_blank" rel="noopener" class="contact-social">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <div id="form-success">
+        <h3 id="success-heading"></h3>
+        <p id="success-body"></p>
+        <button class="reset-btn" onclick="resetForm()">Send another →</button>
+      </div>
+
+      <form id="contact-form" class="contact-form" data-fade onsubmit="submitForm(event)">
+        <div class="form-field">
+          <label class="form-label" for="cname">Name</label>
+          <input class="port-input" id="cname" name="cname" type="text" placeholder="Your name">
+          <span id="err-name" class="form-err"></span>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="cemail">Email</label>
+          <input class="port-input" id="cemail" name="cemail" type="text" placeholder="you@example.com">
+          <span id="err-email" class="form-err"></span>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="cmessage">Message</label>
+          <textarea class="port-input" id="cmessage" name="cmessage" placeholder="What are you working on?"></textarea>
+          <span id="err-message" class="form-err"></span>
+        </div>
+        <div>
+          <button id="submit-btn" type="submit">Send message →</button>
+        </div>
+      </form>
+
+      <footer class="site-footer">
+        <span>Nolan Lee &mdash; Texas</span>
+        <span>CodeIgniter 4 &amp; Claude Code</span>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  var nav = document.getElementById('main-nav');
+
+  function reveal() {
+    var h = window.innerHeight || 800;
+    document.querySelectorAll('[data-fade]:not([data-shown])').forEach(function (el) {
+      if (el.getBoundingClientRect().top < h * 0.9) {
+        el.setAttribute('data-shown', '1');
+      }
+    });
+  }
+
+  function onScroll() {
+    nav.classList.toggle('visible', window.scrollY > 100);
+    reveal();
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  window.addEventListener('load', reveal);
+
+  reveal();
+  document.documentElement.classList.add('js-ready');
+  nav.classList.toggle('visible', window.scrollY > 100);
+  setTimeout(reveal, 120);
+  setTimeout(reveal, 500);
+
+  window.submitForm = function (e) {
+    e.preventDefault();
+    var name    = document.getElementById('cname').value.trim();
+    var email   = document.getElementById('cemail').value.trim();
+    var message = document.getElementById('cmessage').value.trim();
+    var errName  = document.getElementById('err-name');
+    var errEmail = document.getElementById('err-email');
+    var errMsg   = document.getElementById('err-message');
+    var valid = true;
+
+    errName.style.display = errEmail.style.display = errMsg.style.display = 'none';
+
+    if (!name) {
+      errName.textContent = 'Please add your name.';
+      errName.style.display = 'block';
+      valid = false;
+    }
+    if (!email) {
+      errEmail.textContent = 'Please add your email.';
+      errEmail.style.display = 'block';
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEmail.textContent = 'That email doesn’t look right.';
+      errEmail.style.display = 'block';
+      valid = false;
+    }
+    if (message.length < 10) {
+      errMsg.textContent = 'A little more detail, please (10+ characters).';
+      errMsg.style.display = 'block';
+      valid = false;
+    }
+    if (!valid) return;
+
+    document.getElementById('contact-form').style.display = 'none';
+    var success = document.getElementById('form-success');
+    success.style.display = 'block';
+    document.getElementById('success-heading').textContent = 'Thanks, ' + name + '.';
+    document.getElementById('success-body').innerHTML =
+      'Your message is on its way. Nolan will reply to <strong>' +
+      email.replace(/</g, '&lt;') + '</strong> soon.';
+    success.setAttribute('data-shown', '1');
+  };
+
+  window.resetForm = function () {
+    document.getElementById('contact-form').style.display = 'grid';
+    document.getElementById('form-success').style.display = 'none';
+    document.getElementById('cname').value = '';
+    document.getElementById('cemail').value = '';
+    document.getElementById('cmessage').value = '';
+  };
+}());
+</script>
+</body>
+</html>
