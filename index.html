@@ -270,6 +270,32 @@
       font-weight: 400;
       margin-bottom: 14px;
     }
+    .demo-creds {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: rgba(28,28,26,0.04);
+      border-left: 2px solid var(--c-rule);
+    }
+    .demo-label {
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--c-ghost);
+    }
+    .demo-sep { color: var(--c-rule); font-size: 13px; }
+    .demo-field {
+      font-size: 12.5px;
+      font-weight: 400;
+      color: var(--c-muted);
+      font-family: 'Inter', monospace;
+      letter-spacing: 0.01em;
+    }
+
     .project-links { display: flex; gap: 24px; }
     .proj-link {
       font-size: 13px;
@@ -486,7 +512,7 @@
 <body>
 
 <nav id="main-nav">
-  <a href="#top" class="nav-logo">Nolan Lee</a>
+  <a href="#top" class="nav-logo"><img src="favicon.png" alt="" style="height:1.4em;width:1.4em;border-radius:5px;vertical-align:-0.28em;margin-right:0.45em;">Nolan Lee</a>
   <div class="nav-links">
     <a href="#work" class="nav-link">Work</a>
     <a href="#about" class="nav-link">About</a>
@@ -533,6 +559,13 @@
       <div class="project-frame">
         <img src="Journey-Home.png" alt="Journey Home placement dashboard — foster roster and animal placement tracker">
       </div>
+      <div class="demo-creds">
+        <span class="demo-label">Demo login</span>
+        <span class="demo-sep">&mdash;</span>
+        <span class="demo-field">admin@journeyhome.com</span>
+        <span class="demo-sep">/</span>
+        <span class="demo-field">JourneyHome!</span>
+      </div>
       <p class="project-stack">PHP &middot; CodeIgniter 4 &middot; MySQL &middot; Tailwind CSS</p>
       <div class="project-links">
         <a href="https://github.com/nolan372-dotcom/journey-home" target="_blank" rel="noopener" class="proj-link">GitHub ↗</a>
@@ -553,6 +586,13 @@
       <p class="project-body">I built a live tracking system: one place for fridge status, volunteer task assignments, and donation-pickup logging. It&#8217;s designed for volunteers with no technical background. The screen tells you what needs doing and who&#8217;s doing it, and nothing else.</p>
       <div class="project-frame-bleed">
         <img src="fridge-connect.png" alt="Fridge Connect live status board — community fridge tracker">
+      </div>
+      <div class="demo-creds">
+        <span class="demo-label">Demo login</span>
+        <span class="demo-sep">&mdash;</span>
+        <span class="demo-field">admin@fridgeconnect.com</span>
+        <span class="demo-sep">/</span>
+        <span class="demo-field">FridgeConnect!</span>
       </div>
       <p class="project-stack">PHP &middot; CodeIgniter 4 &middot; MySQL &middot; Tailwind CSS</p>
       <div class="project-links">
